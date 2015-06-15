@@ -16,11 +16,11 @@ import java.util.regex.Pattern;
 public class UCLAcrawler extends WebCrawler {
     private final static String ROOT_URL = "http://www.heartbd2k.org/";
 
-    private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
+    private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|gif|js|jpg"
             + "|png|mp3|mp3|zip|gz))$");
 
     private BufferedWriter output;
-
+    
     @Override
     public void onStart() {
         super.onStart();
@@ -57,6 +57,7 @@ public class UCLAcrawler extends WebCrawler {
         return !FILTERS.matcher(href).matches()
                 && href.startsWith(ROOT_URL);
     }
+
 
     /**
      * This function is called when a page is fetched and ready
