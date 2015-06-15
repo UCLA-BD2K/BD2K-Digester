@@ -7,25 +7,38 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
  * Created by Alan on 6/15/2015.
  */
-public class UCLAcrawler extends WebCrawler {
-    private final static String ROOT_URL = "http://www.heartbd2k.org/";
+public final class UCLAcrawler extends WebCrawler {
+    public final static String CRAWLER_ID = "UCLA";
+    public final static String ROOT_URL = "http://www.heartbd2k.org/";
+
+    private final static String OUTPUT_PATH = "data/" + CRAWLER_ID;
 
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|gif|js|jpg"
             + "|png|mp3|mp3|zip|gz))$");
 
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+    private File file;
     private BufferedWriter output;
     
     @Override
     public void onStart() {
         super.onStart();
         try {
-            output = new BufferedWriter(new FileWriter(new File("/data/storedText.txt")));
+            // Create intermediate directories if necessary
+            file = new File(OUTPUT_PATH);
+            file.mkdirs();
+            // Create new timestamped file
+            file = new File(OUTPUT_PATH + "/" + CRAWLER_ID + "_" + dateFormat.format(new Date()) + ".txt");
+            output = new BufferedWriter(new FileWriter(file));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,17 +84,17 @@ public class UCLAcrawler extends WebCrawler {
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String text = htmlParseData.getText();
+
+            // Write to file
+            // TODO Check for captions with regexp: "/<span class='description'>(.+)<\/span>/g"
             try {
                 output.write(text);
             } catch(IOException e) {
                 e.printStackTrace();
             }
+
             String html = htmlParseData.getHtml();
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
-
-            System.out.println("Text length: " + text.length());
-            System.out.println("Html length: " + html.length());
-            System.out.println("Number of outgoing links: " + links.size());
         }
     }
 }
