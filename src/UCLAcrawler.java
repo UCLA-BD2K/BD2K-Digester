@@ -3,6 +3,10 @@ import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -14,6 +18,28 @@ public class UCLAcrawler extends WebCrawler {
 
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
             + "|png|mp3|mp3|zip|gz))$");
+
+    private BufferedWriter output;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            output = new BufferedWriter(new FileWriter(new File("/data/storedText.txt")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBeforeExit() {
+        super.onBeforeExit();
+        try {
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This method receives two parameters. The first parameter is the page
@@ -44,6 +70,11 @@ public class UCLAcrawler extends WebCrawler {
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String text = htmlParseData.getText();
+            try {
+                output.write(text);
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
             String html = htmlParseData.getHtml();
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
