@@ -1,3 +1,5 @@
+package crawlers;
+
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -11,34 +13,34 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Outputs all plaintext in a site to a single time-stamped text file.
+ *
  * Created by Alan on 6/15/2015.
  */
-public final class UCLAcrawler extends WebCrawler {
-    public final static String CRAWLER_ID = "UCLA";
-    public final static String ROOT_URL = "http://www.heartbd2k.org/";
-
-    private final static String OUTPUT_PATH = "data/" + CRAWLER_ID;
-
-    private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|gif|js|jpg"
-            + "|png|mp3|mp3|zip|gz))$");
-
+public abstract class ConcatCrawler extends WebCrawler {
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-    private File file;
-    private BufferedWriter output;
-    
+    private BufferedWriter writer;
+
+    public abstract String getCrawlID();
+    public abstract String getRootURL();
+    public abstract String getOutputPath();
+    public abstract Pattern getFiletypeFilters();
+    public abstract String[] getURLExclusion();
+    public abstract Pattern getSpecialTextPattern();
+
     @Override
     public void onStart() {
         super.onStart();
         try {
             // Create intermediate directories if necessary
-            file = new File(OUTPUT_PATH);
-            file.mkdirs();
+            new File(getOutputPath()).mkdirs();
             // Create new timestamped file
-            file = new File(OUTPUT_PATH + "/" + CRAWLER_ID + "_" + dateFormat.format(new Date()) + ".txt");
-            output = new BufferedWriter(new FileWriter(file));
+            writer = new BufferedWriter(new FileWriter(
+                    new File(getOutputPath() + "/" + getCrawlID() + "_" + dateFormat.format(new Date()) + ".txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,7 +50,7 @@ public final class UCLAcrawler extends WebCrawler {
     public void onBeforeExit() {
         super.onBeforeExit();
         try {
-            output.close();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,10 +69,19 @@ public final class UCLAcrawler extends WebCrawler {
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
-        return !FILTERS.matcher(href).matches()
-                && href.startsWith(ROOT_URL);
-    }
+        if (!getFiletypeFilters().matcher(href).matches() && href.startsWith(getRootURL())) {
+            for (String exclude : getURLExclusion()) {
+                if (href.equals(exclude)) {
+                    System.out.println("URL: " + href + " (EXCLUDED)");
+                    return false;
+                }
+            }
 
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * This function is called when a page is fetched and ready
@@ -78,17 +89,26 @@ public final class UCLAcrawler extends WebCrawler {
      */
     @Override
     public void visit(Page page) {
-        String url = page.getWebURL().getURL();
-        System.out.println("URL: " + url);
+        System.out.println("URL: " + page.getWebURL().getURL());
 
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-            String text = htmlParseData.getText();
 
             // Write to file
-            // TODO Check for captions with regexp: "/<span class='description'>(.+)<\/span>/g"
             try {
-                output.write(text);
+                writer.write("PAGE: " + htmlParseData.getTitle() + "\n");
+                writer.write("URL: " + page.getWebURL().getURL() + "\n");
+                writer.newLine();
+
+                writer.write(htmlParseData.getText().replaceAll("[\\\r\\\n]+", "") + "\n"); // Strip excess newlines
+                // Find special text in HTML
+                Matcher specialMatcher = getSpecialTextPattern().matcher(htmlParseData.getHtml());
+                while (specialMatcher.find()) {
+                    writer.write(specialMatcher.group(1));
+                }
+                writer.newLine();
+
+                writer.flush();
             } catch(IOException e) {
                 e.printStackTrace();
             }
