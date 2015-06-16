@@ -3,15 +3,15 @@ package crawlers;
 import java.util.regex.Pattern;
 
 /**
- * Created by Alan on 6/16/2015.
+ * Created by Sneha on 6/16/2015.
  */
-public class UCLACrawler extends ConcatCrawler {
-    private final static String CRAWL_ID = "UCLA";
-    private final static String ROOT_URL = "http://www.heartbd2k.org/";
+public class MobilizeCrawler extends ConcatCrawler {
+    private final static String CRAWL_ID = "Mobilize";
+    private final static String ROOT_URL = "http://mobilize.stanford.edu/";
     private final static String OUTPUT_PATH = "data/" + CRAWL_ID;
     private final static Pattern FILETYPE_FILTERS = Pattern.compile(".*(\\.(css|gif|js|jpg|png|mp3|mp3|zip|gz))$");
-    private final static String[] URL_EXCLUDES = {"http://www.heartbd2k.org/cdn-cgi/l/email-protection"};
-    private final static Pattern SPECIAL_TEXT_PATTERN = Pattern.compile("<span class='description'>(.*)<\\/span>");
+    private final static String[] URL_EXCLUDES = {""};
+    private final static Pattern SPECIAL_TEXT_PATTERN = Pattern.compile("");
 
     @Override
     public String getCrawlID() {

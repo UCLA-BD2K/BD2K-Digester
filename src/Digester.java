@@ -1,6 +1,5 @@
-import crawlers.ConcatCrawler;
-import crawlers.LINCSDCICCrawler;
-import crawlers.UCLACrawler;
+import crawlers.*;
+
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -14,8 +13,18 @@ import java.io.File;
  */
 public class Digester {
     public static void main(String[] args) throws Exception {
-        getDigest(new UCLACrawler());
+        getDigest(new ENIGMACrawler());
+        getDigest(new HarvardCrawler());
         getDigest(new LINCSDCICCrawler());
+        getDigest(new MobilizeCrawler());
+        getDigest(new StanfordCrawler());
+        getDigest(new UCLACrawler());
+        getDigest(new UCSCCrawler());
+        getDigest(new UIUCCrawler());
+        getDigest(new UMemphisCrawler());
+        getDigest(new UPittCrawler());
+        getDigest(new USCCrawler());
+        getDigest(new UWiscCrawler());
     }
 
     /**
