@@ -56,6 +56,10 @@ public abstract class ConcatCrawler extends WebCrawler {
         }
     }
 
+    protected BufferedWriter getWriter() {
+        return writer;
+    }
+
     /**
      * This method receives two parameters. The first parameter is the page
      * in which we have discovered this new url and the second parameter is

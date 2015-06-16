@@ -1,4 +1,5 @@
 import crawlers.ConcatCrawler;
+import crawlers.LINCSDCICCrawler;
 import crawlers.UCLACrawler;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
@@ -14,6 +15,7 @@ import java.io.File;
 public class Digester {
     public static void main(String[] args) throws Exception {
         getDigest(new UCLACrawler());
+        getDigest(new LINCSDCICCrawler());
     }
 
     /**
@@ -77,13 +79,11 @@ public class Digester {
     private static File getLatestFileFromDir(String dirPath){
         File dir = new File(dirPath);
         if (dir == null) {
-            System.out.println("Bad dir");
             return null;
         }
 
         File[] files = dir.listFiles();
         if (files == null || files.length == 0) {
-            System.out.println("Bad files");
             return null;
         }
 
