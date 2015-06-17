@@ -13,18 +13,14 @@ import java.io.File;
  */
 public class Digester {
     public static void main(String[] args) throws Exception {
-        getDigest(new ENIGMACrawler());
-        getDigest(new HarvardCrawler());
-        getDigest(new LINCSDCICCrawler());
-        getDigest(new MobilizeCrawler());
-        getDigest(new StanfordCrawler());
-        getDigest(new UCLACrawler());
-        getDigest(new UCSCCrawler());
-        getDigest(new UIUCCrawler());
-        getDigest(new UMemphisCrawler());
-        getDigest(new UPittCrawler());
-        getDigest(new USCCrawler());
-        getDigest(new UWiscCrawler());
+        // TODO Read sites from file
+
+        CrawlParams cp = CrawlParams.getInstance();
+        if (cp.CRAWL_ID.equals("LINCS-DCIC")) {
+            getDigest(new LINCSDCICCrawler());
+        } else {
+            getDigest(new DynamicCrawler());
+        }
     }
 
     /**
@@ -57,6 +53,9 @@ public class Digester {
      * @throws Exception
      */
     public static void crawl(ConcatCrawler crawler) throws Exception {
+        // Required for HTTPS sites; see http://stackoverflow.com/a/14884941
+        System.setProperty("jsse.enableSNIExtension", "false");
+
         String crawlStorageFolder = "data/crawl/root";
         int numberOfCrawlers = 7;
 
@@ -68,8 +67,14 @@ public class Digester {
          */
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+        robotstxtConfig.setEnabled(false); // Ignore robots.txt
+        robotstxtConfig.setUserAgentName("UCLA BD2K Crawler");
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
         CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
+
+        // Initialize crawl
+        CrawlParams cp = CrawlParams.getInstance();
+        System.out.println("Starting " + cp.CRAWL_ID + " crawl");
 
         /*
          * For each crawl, you need to add some seed urls. These are the first
@@ -77,6 +82,10 @@ public class Digester {
          * which are found in these pages
          */
         controller.addSeed(crawler.getRootURL());
+        // Add extra seed URLs
+        for (String url : cp.SEED_URLS) {
+            controller.addSeed(url);
+        }
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code

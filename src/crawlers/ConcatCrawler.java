@@ -27,6 +27,7 @@ public abstract class ConcatCrawler extends WebCrawler {
 
     public abstract String getCrawlID();
     public abstract String getRootURL();
+    public abstract String[] getSeedURLs();
     public abstract String getOutputPath();
     public abstract Pattern getFiletypeFilters();
     public abstract String[] getURLExclusion();
@@ -73,18 +74,26 @@ public abstract class ConcatCrawler extends WebCrawler {
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
-        if (!getFiletypeFilters().matcher(href).matches() && href.startsWith(getRootURL())) {
-            for (String exclude : getURLExclusion()) {
-                if (href.equals(exclude)) {
-                    System.out.println("URL: " + href + " (EXCLUDED)");
-                    return false;
-                }
-            }
 
-            return true;
+        // Filter filetypes
+        if (getFiletypeFilters().matcher(href).find()) {
+            return false;
         }
 
-        return false;
+        // Filter domain
+        if (!href.startsWith(getRootURL())) {
+            return false;
+        }
+
+        // Filter excluded URLs
+        for (String exclude : getURLExclusion()) {
+            if (href.startsWith(exclude)) {
+                return false;
+            }
+        }
+
+        System.out.println(href);
+        return true;
     }
 
     /**
@@ -93,22 +102,25 @@ public abstract class ConcatCrawler extends WebCrawler {
      */
     @Override
     public void visit(Page page) {
-        System.out.println("URL: " + page.getWebURL().getURL());
-
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 
             // Write to file
             try {
-                writer.write("PAGE: " + htmlParseData.getTitle() + "\n");
-                writer.write("URL: " + page.getWebURL().getURL() + "\n");
+                writer.write("PAGE: " + htmlParseData.getTitle());
+                writer.newLine();
+                writer.write("URL: " + page.getWebURL().getURL());
+                writer.newLine();
                 writer.newLine();
 
-                writer.write(htmlParseData.getText().replaceAll("[\\\r\\\n]+", "") + "\n"); // Strip excess newlines
+                writer.write(htmlParseData.getText().replaceAll("[\\\r\\\n]+", "")); // Strip excess newlines
+                writer.newLine();
                 // Find special text in HTML
                 Matcher specialMatcher = getSpecialTextPattern().matcher(htmlParseData.getHtml());
+                writer.newLine();
                 while (specialMatcher.find()) {
                     writer.write(specialMatcher.group(1));
+                    writer.newLine();
                 }
                 writer.newLine();
 
