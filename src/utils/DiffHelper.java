@@ -1,4 +1,5 @@
-import difflib.Delta;
+package utils;
+
 import difflib.DiffUtils;
 import difflib.Patch;
 
@@ -21,7 +22,7 @@ public class DiffHelper {
      * @param f2_name   Second input filename
      * @return          Patch diff
      */
-    public static Patch compare(String f1_name, String f2_name) {
+    public static Patch<String> compare(String f1_name, String f2_name) {
         List<String> f1 = fileToLines(f1_name);
         List<String> f2 = fileToLines(f2_name);
 
@@ -35,8 +36,8 @@ public class DiffHelper {
      * @return              Linked list of strings
      */
     private static List<String> fileToLines(String filename) {
-        List<String> lines = new LinkedList<String>();
-        String line = "";
+        List<String> lines = new LinkedList<>();
+        String line;
 
         try {
             BufferedReader in = new BufferedReader(new FileReader(filename));
@@ -53,11 +54,14 @@ public class DiffHelper {
     /**
      * Prints the line by line deltas of a patch.
      *
-     * @param patch
+     * @param patch Input patch
      */
     public static void printPatch(Patch<String> patch) {
-        for (Delta delta : patch.getDeltas()) {
-            System.out.println(delta);
+        if (patch == null) {
+            System.out.println("No changes");
+            return ;
         }
+
+        patch.getDeltas().forEach(System.out::println);
     }
 }

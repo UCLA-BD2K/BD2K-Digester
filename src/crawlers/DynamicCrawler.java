@@ -1,47 +1,45 @@
 package crawlers;
 
-import java.util.regex.Pattern;
-
 /**
- * ConcatCrawler that reads from singleton CrawlParams.
+ * DigestCrawler that reads from singleton CrawlerFactory.
  *
  * Created by Alan on 6/17/2015.
  */
-public class DynamicCrawler extends ConcatCrawler {
-    private final CrawlParams cp = CrawlParams.getInstance();
+public class DynamicCrawler extends DigestCrawler {
+    private final CrawlerFactory cf = CrawlerFactory.getInstance();
 
     @Override
     public String getCrawlID() {
-        return cp.CRAWL_ID;
+        return cf.getCrawlID();
     }
 
     @Override
     public String getRootURL() {
-        return cp.ROOT_URL;
+        return cf.getRootURL();
     }
 
     @Override
     public String[] getSeedURLs() {
-        return cp.SEED_URLS;
+        return cf.getSeedURLs();
     }
 
     @Override
     public String getOutputPath() {
-        return cp.OUTPUT_PATH;
+        return cf.getOutputPath();
     }
 
     @Override
-    public Pattern getFiletypeFilters() {
-        return cp.FILETYPE_FILTERS;
+    public String getFiletypeFilter() {
+        return cf.getFiletypeFilter();
     }
 
     @Override
-    public String[] getURLExclusion() {
-        return cp.URL_EXCLUDES;
+    public String[] getURLExcludes() {
+        return cf.getURLExcludes();
     }
 
     @Override
-    public Pattern getSpecialTextPattern() {
-        return cp.SPECIAL_TEXT_PATTERN;
+    public String getSpecialTextPattern() {
+        return cf.getSpecialTextPattern();
     }
 }

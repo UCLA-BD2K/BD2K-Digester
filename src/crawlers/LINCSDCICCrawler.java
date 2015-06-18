@@ -13,7 +13,6 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Special DynamicCrawler for LINCS-DCIC. Concats all js/data files in addition to standard links.
@@ -23,10 +22,15 @@ import java.util.regex.Pattern;
 public class LINCSDCICCrawler extends DynamicCrawler {
     private Set<String> jsDB;
 
+    protected LINCSDCICCrawler() {
+        // Should not be instantiated by public.
+        super();
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-        jsDB = new HashSet<String>();
+        jsDB = new HashSet<>();
     }
 
     @Override
@@ -40,18 +44,16 @@ public class LINCSDCICCrawler extends DynamicCrawler {
             for (Element element :scriptElements ){
                 // Write js/data to file and add to DB if not discovered
                 String js = element.attr("src");
-                if (js != null && js != "" && js.startsWith("js/data/") && !jsDB.contains(js)) {
+                if (js != null && !js.isEmpty() && js.startsWith("js/data/") && !jsDB.contains(js)) {
                     jsDB.add(js);
                     System.out.println(js);
                     GetRequest request = Unirest.get(getRootURL() + js);
                     try {
                         getWriter().write("JS: " + js + "\n");
                         getWriter().newLine();
-                        getWriter().write(request.asString().getBody().toString());
+                        getWriter().write(request.asString().getBody());
                         getWriter().newLine();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (UnirestException e) {
+                    } catch (IOException | UnirestException e) {
                         e.printStackTrace();
                     }
                 }

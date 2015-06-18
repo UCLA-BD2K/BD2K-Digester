@@ -1,4 +1,5 @@
 import difflib.Patch;
+import utils.DiffHelper;
 
 /**
  * Created by Alan on 6/15/2015.
