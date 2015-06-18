@@ -3,29 +3,21 @@
      <CrawlID ID="ENIGMA">
           <RootURL>http://enigma.ini.usc.edu/</RootURL>
           <OutputPath>data/ENIGMA</OutputPath>
-          <Seeds/>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="Harvard">
           <RootURL>http://www.pic-sure.org/</RootURL>
           <OutputPath>data/Harvard</OutputPath>
-          <Seeds/>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="LINCS-DCIC">
           <RootURL>http://lincs-dcic.org/</RootURL>
           <OutputPath>data/LINCS-DCIC</OutputPath>
-          <Seeds/>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="Mobilize">
           <RootURL>http://mobilize.stanford.edu/</RootURL>
           <OutputPath>data/mobilize</OutputPath>
-          <Seeds/>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="Stanford">
@@ -33,56 +25,42 @@
           <OutputPath>data/Stanford</OutputPath>
           <Seeds>https://med.stanford.edu/cedar.html</Seeds>
           <Seeds>https://med.stanford.edu/cedar/about.html</Seeds>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="UCLA">
           <RootURL>http://www.heartbd2k.org/</RootURL>
           <OutputPath>data/UCLA</OutputPath>
-          <Seeds/>
           <Exclude>http://www.heartbd2k.org/cdn-cgi/l/email-protection</Exclude>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="UCSC">
           <RootURL>https://genomics.soe.ucsc.edu/bd2k</RootURL>
           <OutputPath>data/UCSC</OutputPath>
-          <Seeds/>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="UIUC">
           <RootURL>http://knoweng.org/</RootURL>
           <OutputPath>data/UIUC</OutputPath>
-          <Seeds/>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="UMemphis">
           <RootURL>https://md2k.org/</RootURL>
           <OutputPath>data/UMemphis</OutputPath>
-          <Seeds/>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="UPitt">
           <RootURL>http://www.ccd.pitt.edu/</RootURL>
           <OutputPath>data/UPitt</OutputPath>
-          <Seeds/>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="USC">
           <RootURL>http://bd2k.ini.usc.edu/</RootURL>
           <OutputPath>data/USC</OutputPath>
-          <Seeds/>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
      <CrawlID ID="UWisc">
           <RootURL>http://cpcp.wisc.edu/</RootURL>
           <OutputPath>data/UWisc</OutputPath>
-          <Seeds/>
-          <Exclude/>
           <SpecialText/>
      </CrawlID>
 </Links>
