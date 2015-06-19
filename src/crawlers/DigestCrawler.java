@@ -109,7 +109,7 @@ public class DigestCrawler extends WebCrawler {
 
         // Filter excluded URLs
         for (String exclude : getURLExcludes()) {
-            if (href.startsWith(exclude)) {
+            if (href.startsWith(exclude) || href.equals(exclude)) {
                 return false;
             }
         }

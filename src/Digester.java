@@ -63,8 +63,8 @@ public class Digester {
         // Iterate through crawl nodes
         doc.getDocumentElement().normalize();
         NodeList crawlNodes = doc.getElementsByTagName("CrawlID");
-        for (int temp = 0; temp < crawlNodes.getLength(); temp++) {
-            Node node = crawlNodes.item(temp);
+        for (int i = 0; i < crawlNodes.getLength(); i++) {
+            Node node = crawlNodes.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element crawlNode = (Element) node;
                 String crawlID = crawlNode.getAttribute("ID");
@@ -76,19 +76,22 @@ public class Digester {
                 }
 
                 // Process seed URLs
-                NodeList seedNodes = crawlNode.getElementsByTagName("SeedURLs");
+                Element seeds = (Element) crawlNode.getElementsByTagName("Seeds").item(0);
+                NodeList seedNodes = seeds.getElementsByTagName("SeedURL");
                 int numSeeds = seedNodes.getLength();
                 String seedList[] = new String[numSeeds];
-                for (int i = 0; i < numSeeds; i++) {
-                    seedList[i] = seedNodes.item(i).getTextContent();
+                for (int j = 0; j < numSeeds; j++) {
+                    seedList[j] = seedNodes.item(j).getTextContent();
+                    System.out.println(seedList[j]);
                 }
 
                 // Process URL excludes
-                NodeList excludeNodes = crawlNode.getElementsByTagName("ExcludeURLs");
+                Element excludes = (Element) crawlNode.getElementsByTagName("Excludes").item(0);
+                NodeList excludeNodes = excludes.getElementsByTagName("ExcludeURL");
                 int numExcludes = excludeNodes.getLength();
                 String excludeList[] = new String[numExcludes];
-                for (int i = 0; i < numExcludes; i++) {
-                    excludeList[i] = excludeNodes.item(i).getTextContent();
+                for (int j = 0; j < numExcludes; j++) {
+                    excludeList[j] = excludeNodes.item(j).getTextContent();
                 }
 
                 String specialTextPattern = crawlNode.getElementsByTagName("SpecialText").item(0).getTextContent();

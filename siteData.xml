@@ -1,115 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Links>
-     <CrawlID ID="ENIGMA">
-          <RootURL>http://enigma.ini.usc.edu/</RootURL>
-          <OutputPath>data/ENIGMA</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-          <Exclude/>
-		<ExcludeURLs/>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="Harvard">
-          <RootURL>http://www.pic-sure.org/</RootURL>
-          <OutputPath>data/Harvard</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-          <Exclude/>
-		<ExcludeURLs/>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="LINCS-DCIC">
-          <RootURL>http://lincs-dcic.org/</RootURL>
-          <OutputPath>data/LINCS-DCIC</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-          <Exclude/>
-		<ExcludeURLs/>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="Mobilize">
-          <RootURL>http://mobilize.stanford.edu/</RootURL>
-          <OutputPath>data/mobilize</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-		<ExcludeURLs/>
-          <Exclude/>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="Stanford">
-          <RootURL>https://med.stanford.edu/</RootURL>
-          <OutputPath>data/Stanford</OutputPath>
-          <Seeds>
-		<SeedURLs>https://med.stanford.edu/cedar.html</SeedURLs>
-          	<SeedURLs>https://med.stanford.edu/cedar/about.html</SeedURLs>
-	  </Seeds>
-		<ExcludeURLs/>
-          </Exclude>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="UCLA">
-          <RootURL>http://www.heartbd2k.org/</RootURL>
-          <OutputPath>data/UCLA</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-          <Exclude>
-		<ExcludeUrls>http://www.heartbd2k.org/cdn-cgi/l/email-protection<ExcludeURLs/>
-	  </Exclude>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="UCSC">
-          <RootURL>https://genomics.soe.ucsc.edu/bd2k</RootURL>
-          <OutputPath>data/UCSC</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-		<ExcludeURLs/>
-          <Exclude/>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="UIUC">
-          <RootURL>http://knoweng.org/</RootURL>
-          <OutputPath>data/UIUC</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-		<ExcludeURLs/>
-          <Exclude/>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="UMemphis">
-          <RootURL>https://md2k.org/</RootURL>
-          <OutputPath>data/UMemphis</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-		<ExcludeURLs/>
-          <Exclude/>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="UPitt">
-          <RootURL>http://www.ccd.pitt.edu/</RootURL>
-          <OutputPath>data/UPitt</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-		<ExcludeURLs/>
-          <Exclude/>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="USC">
-          <RootURL>http://bd2k.ini.usc.edu/</RootURL>
-          <OutputPath>data/USC</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-		<ExcludeURLs/>
-          <Exclude/>
-          <SpecialText/>
-     </CrawlID>
-     <CrawlID ID="UWisc">
-          <RootURL>http://cpcp.wisc.edu/</RootURL>
-          <OutputPath>data/UWisc</OutputPath>
-		<SeedURLs/>
-          <Seeds/>
-		<ExcludeURLs/>
-          <Exclude/>
-          <SpecialText/>
-     </CrawlID>
+    <CrawlID ID="ENIGMA">
+        <RootURL>http://enigma.ini.usc.edu/</RootURL>
+        <OutputPath>data/ENIGMA</OutputPath>
+        <Seeds/>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="Harvard">
+        <RootURL>http://www.pic-sure.org/</RootURL>
+        <OutputPath>data/Harvard</OutputPath>
+        <Seeds/>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="LINCS-DCIC">
+        <RootURL>http://lincs-dcic.org/</RootURL>
+        <OutputPath>data/LINCS-DCIC</OutputPath>
+        <Seeds/>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="Mobilize">
+        <RootURL>http://mobilize.stanford.edu/</RootURL>
+        <OutputPath>data/mobilize</OutputPath>
+        <Seeds/>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="Stanford">
+        <RootURL>https://med.stanford.edu/</RootURL>
+        <OutputPath>data/Stanford</OutputPath>
+        <Seeds>
+            <SeedURL>https://med.stanford.edu/cedar.html</SeedURL>
+        </Seeds>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="UCLA">
+        <RootURL>http://www.heartbd2k.org/</RootURL>
+        <OutputPath>data/UCLA</OutputPath>
+        <Seeds/>
+        <Excludes>
+            <ExcludeURL>http://www.heartbd2k.org/cdn-cgi/l/email-protection</ExcludeURL>
+        </Excludes>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="UCSC">
+        <RootURL>https://genomics.soe.ucsc.edu/bd2k</RootURL>
+        <OutputPath>data/UCSC</OutputPath>
+        <Seeds/>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="UIUC">
+        <RootURL>http://knoweng.org/</RootURL>
+        <OutputPath>data/UIUC</OutputPath>
+        <Seeds/>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="UMemphis">
+        <RootURL>https://md2k.org/</RootURL>
+        <OutputPath>data/UMemphis</OutputPath>
+        <Seeds/>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="UPitt">
+        <RootURL>http://www.ccd.pitt.edu/</RootURL>
+        <OutputPath>data/UPitt</OutputPath>
+        <Seeds/>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="USC">
+        <RootURL>http://bd2k.ini.usc.edu/</RootURL>
+        <OutputPath>data/USC</OutputPath>
+        <Seeds/>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="UWisc">
+        <RootURL>http://cpcp.wisc.edu/</RootURL>
+        <OutputPath>data/UWisc</OutputPath>
+        <Seeds/>
+        <Excludes/>
+        <SpecialText/>
+    </CrawlID>
 </Links>
-
