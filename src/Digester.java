@@ -50,15 +50,15 @@ public class Digester {
                 String crawlID = crawlNode.getAttribute("ID");
                 String RootURL = crawlNode.getElementsByTagName("RootURL").item(0).getTextContent();
 
-                NodeList seedNodes = crawlNode.getElementsByTagName("Seeds");
+                NodeList seedNodes = crawlNode.getElementsByTagName("SeedURLs");
                 int numSeeds = seedNodes.getLength();
                 String seedList[] = new String[numSeeds];
                 for (int i = 0; i < numSeeds; i++) {
                     seedList[i] = seedNodes.item(i).getTextContent();
                 }
 
-                NodeList excludeNodes = crawlNode.getElementsByTagName("Exclude");
-                int numExcludes = excludeNodes.getLength();
+                NodeList excludeNodes = crawlNode.getElementsByTagName("ExcludeURLs");
+                int numExcludes = excludeNodes.getLength();;
                 String excludeList[] = new String[numExcludes];
                 for (int i = 0; i < numExcludes; i++) {
                     excludeList[i] = excludeNodes.item(i).getTextContent();

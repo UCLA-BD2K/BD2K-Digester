@@ -37,8 +37,14 @@ public class XMLReader {
                     System.out.println("Crawl ID : " + eElement.getAttribute("ID"));
                     System.out.println("Root URL : " + eElement.getElementsByTagName("RootURL").item(0).getTextContent());
                     System.out.println("Output Path : " + eElement.getElementsByTagName("OutputPath").item(0).getTextContent());
-                    System.out.println("Seeds: " + eElement.getElementsByTagName("Seeds").item(0).getTextContent());
-                    //System.out.println("Filters : " + eElement.getElementsByTagName("filters").item(0).getTextContent());
+                    System.out.println("Seeds: ");
+                    NodeList Seeds = eElement.getElementsByTagName("SeedURLs");
+                    System.out.println("SeedURLs: ");
+                    for(int i = 0; i < Seeds.getLength(); i++)
+                    {
+                        Element tempElem = (Element) nNode;
+                        System.out.println("Seed URL: " + tempElem.getElementsByTagName("SeedURLs").item(i).getTextContent());
+                    }
                     System.out.println("URL Excludes: " + eElement.getElementsByTagName("Exclude").item(0).getTextContent());
                     System.out.println("Special Text : " + eElement.getElementsByTagName("SpecialText").item(0).getTextContent());
 
