@@ -192,13 +192,16 @@ public class Digester {
                 writer.write(crawler.getCrawlID() + "\n");
                 writer.write(crawler.getRootURL() + "\n");
                 if (pageDiffs == null || pageDiffs.isEmpty()) {
-                    writer.write("No changes" + "\n");
+                    writer.write("\n" + "No changes" + "\n");
                 } else {
                     pageDiffs.forEach((PageDiff pageDiff) -> {
                         System.out.println(pageDiff);
                         try {
                             writer.write(pageDiff.URL + "\n");
-                            writer.write(pageDiff.delta.toString() + "\n");
+                            writer.write("From" + "\n" + pageDiff.delta.getRevised().getLines() + "\n");
+                            writer.write("To " + "[Position: " + pageDiff.delta.getRevised().getPosition() +
+                                    " Size: " + pageDiff.delta.getRevised().size() + " ]" + "\n" +
+                                    pageDiff.delta.getOriginal().getLines() + "\n\n\n");
                             writer.flush();
                         } catch (IOException e) {
                             e.printStackTrace();
