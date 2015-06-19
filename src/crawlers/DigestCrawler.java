@@ -1,6 +1,5 @@
 package crawlers;
 
-import difflib.Patch;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -10,15 +9,12 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
-import utils.DiffHelper;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +25,7 @@ import java.util.regex.Pattern;
  * Created by Alan on 6/15/2015.
  */
 public class DigestCrawler extends WebCrawler {
-    private final static int NUM_CRAWLERS = 4;
+    private final static int NUM_CRAWLERS = 1;
     private final static String USER_AGENT_NAME = "UCLA BD2K";
     private final static String CRAWL_STORAGE_FOLDER = "temp/crawl/root";
 
@@ -118,7 +114,6 @@ public class DigestCrawler extends WebCrawler {
             }
         }
 
-        System.out.println(href);
         return true;
     }
 
@@ -129,27 +124,25 @@ public class DigestCrawler extends WebCrawler {
     @Override
     public void visit(Page page) {
         if (page.getParseData() instanceof HtmlParseData) {
+            System.out.println(page.getWebURL().getURL());
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 
             // Write to file
             try {
-                writer.write("PAGE: " + htmlParseData.getTitle());
-                writer.newLine();
-                writer.write("URL: " + page.getWebURL().getURL());
-                writer.newLine();
+                writer.write("PAGE: " + htmlParseData.getTitle() + "\n");
+                writer.write("URL: " + page.getWebURL().getURL() + "\n");
                 writer.newLine();
 
-                writer.write(htmlParseData.getText().replaceAll("[\\\r\\\n]+", "")); // Strip excess newlines
-                writer.newLine();
-                // Find special text in HTML
+                // Write text
+                writer.write(cleanText(htmlParseData.getText()) + "\n");
+
+                // Write special text
                 Matcher specialMatcher = Pattern.compile(getSpecialTextPattern()).matcher(htmlParseData.getHtml());
-                writer.newLine();
                 while (specialMatcher.find()) {
-                    writer.write(specialMatcher.group(1));
-                    writer.newLine();
+                    writer.write(cleanText(specialMatcher.group(1)) + "\n");
                 }
-                writer.newLine();
 
+                writer.newLine();
                 writer.flush();
             } catch(IOException e) {
                 e.printStackTrace();
@@ -160,7 +153,7 @@ public class DigestCrawler extends WebCrawler {
     /**
      * Runs the given crawler and returns any changes since the last run (if exists).
      */
-    public Patch<String> digest() {
+    public List<PageDiff> digest() {
         // Get previous site state file
         File prev = getLatestFileFromDir(getOutputPath());
 
@@ -173,9 +166,7 @@ public class DigestCrawler extends WebCrawler {
 
         // Compare with previous state if exists
         if (prev != null) {
-            Patch<String> patch = DiffHelper.compare(prev.getPath(), getLatestFileFromDir(getOutputPath()).getPath());
-            DiffHelper.printPatch(patch);
-            return patch;
+            return PageDiff.getPageDiffs(prev.getPath(), getLatestFileFromDir(getOutputPath()).getPath());
         }
 
         return null;
@@ -253,6 +244,19 @@ public class DigestCrawler extends WebCrawler {
         return specialTextPatterns;
     }
 
+    private String cleanText(String text) {
+        text = text.replaceAll("[ \\t]+", " "); // Collapse whitespace
+        text = text.replaceAll("[ \\t]*\\n+[ \\t]*", "\n"); // Trim whitespace
+        text = text.replaceAll("\\n+", "\n"); // Collapse empty lines
+        return text;
+    }
+
+    /**
+     * Returns the last modified file from the directory.
+     *
+     * @param dirPath   Directory to search
+     * @return
+     */
     private static File getLatestFileFromDir(String dirPath){
         File dir = new File(dirPath);
 

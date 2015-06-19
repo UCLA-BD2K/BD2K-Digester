@@ -43,15 +43,15 @@ public class LINCSDCICCrawler extends DynamicCrawler {
             Elements scriptElements = doc.getElementsByTag("script");
             for (Element element :scriptElements ){
                 // Write js/data to file and add to DB if not discovered
-                String js = element.attr("src");
-                if (js != null && !js.isEmpty() && js.startsWith("js/data/") && !jsDB.contains(js)) {
-                    jsDB.add(js);
-                    System.out.println(js);
-                    GetRequest request = Unirest.get(getRootURL() + js);
+                String jsURL = element.attr("src");
+                if (jsURL != null && !jsURL.isEmpty() && jsURL.startsWith("js/data/") && !jsDB.contains(jsURL)) {
+                    jsDB.add(jsURL);
+                    System.out.println(jsURL);
+                    GetRequest request = Unirest.get(getRootURL() + jsURL);
                     try {
-                        getWriter().write("JS: " + js + "\n");
+                        getWriter().write("JS: " + jsURL + "\n");
                         getWriter().newLine();
-                        getWriter().write(request.asString().getBody());
+                        getWriter().write(request.asString().getBody() + "\n");
                         getWriter().newLine();
                     } catch (IOException | UnirestException e) {
                         e.printStackTrace();

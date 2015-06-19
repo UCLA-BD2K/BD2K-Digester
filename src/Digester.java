@@ -1,6 +1,4 @@
 import crawlers.*;
-import difflib.Delta;
-import difflib.Patch;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,6 +12,7 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static java.lang.System.exit;
 
@@ -97,17 +96,20 @@ public class Digester {
                 // Create and run crawler
                 DigestCrawler crawler = new DigestCrawler(crawlID, RootURL, seedList,
                         DEFAULT_FILETYPE_FILTERS, excludeList, specialTextPattern);
-                Patch<String> patch = crawler.digest();
+                List<PageDiff> pageDiffs = crawler.digest();
 
                 // Output results to diff file
                 writer.write(crawler.getCrawlID() + "\n");
-                writer.newLine();
-                if (patch == null) {
+                writer.write(crawler.getRootURL() + "\n");
+                if (pageDiffs == null || pageDiffs.isEmpty()) {
                     writer.write("No changes" + "\n");
                 } else {
-                    patch.getDeltas().forEach((Delta delta) -> {
+                    pageDiffs.forEach((PageDiff pageDiff) -> {
+                        System.out.println(pageDiff);
                         try {
-                            writer.write(delta.toString() + "\n");
+                            writer.write(pageDiff.URL + "\n");
+                            writer.write(pageDiff.delta.toString() + "\n");
+                            writer.flush();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
