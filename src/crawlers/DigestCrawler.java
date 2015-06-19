@@ -44,12 +44,12 @@ public class DigestCrawler extends WebCrawler {
         // Empty constructor to be used only by subclasses.
     }
 
-    public DigestCrawler(String crawlID, String rootURL, String[] seedURLs,
+    public DigestCrawler(String crawlID, String rootURL, String[] seedURLs, String outputPath,
                          String filetypeFilter, String[] URLExcludes, String specialTextPatterns) {
         this.crawlID = crawlID;
         this.rootURL = rootURL;
         this.seedURLs = seedURLs;
-        this.outputPath = "data/crawls/" + crawlID;
+        this.outputPath = outputPath;
         this.filetypeFilter = filetypeFilter;
         this.URLExcludes = URLExcludes;
         this.specialTextPatterns = specialTextPatterns;
@@ -153,7 +153,7 @@ public class DigestCrawler extends WebCrawler {
     /**
      * Runs the given crawler and returns any changes since the last run (if exists).
      */
-    public List<PageDiff> digest() {
+    public List<PageDiff> getDigest() {
         // Get previous site state file
         File prev = getLatestFileFromDir(getOutputPath());
 
