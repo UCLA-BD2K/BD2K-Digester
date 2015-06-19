@@ -58,7 +58,8 @@ public class Digester {
                 }
 
                 NodeList excludeNodes = crawlNode.getElementsByTagName("ExcludeURLs");
-                int numExcludes = excludeNodes.getLength();;
+                int numExcludes = excludeNodes.getLength();
+                ;
                 String excludeList[] = new String[numExcludes];
                 for (int i = 0; i < numExcludes; i++) {
                     excludeList[i] = excludeNodes.item(i).getTextContent();
