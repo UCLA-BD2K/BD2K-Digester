@@ -31,15 +31,15 @@ public class XMLWriter {
             Element rootElement = doc.createElement("Links");
             doc.appendChild(rootElement);
 
-            int numValues = 12;
+            int numValues = 2;
             BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
             String in = bf.readLine();
             Scanner scan = new Scanner(System.in);
             String[] ids = new String[numValues];
             String[] url = new String[numValues];
             String[] outputPath = new String[numValues];
-            String[][] seed = new String[numValues][];
-            String[][] excludes = new String[numValues][];
+            String[][] seed = new String[numValues][1000];
+            String[][] excludes = new String[numValues][1000];
             String [] specialTextPattern = new String[numValues];
             System.out.print("Enter the values: ");
             int k, l;
@@ -80,24 +80,28 @@ public class XMLWriter {
                 Element rootURL = doc.createElement("RootURL");
                 Element outputP = doc.createElement("OutputPath");
                 Element seeds = doc.createElement("Seeds");
+                Element seedsURLs = doc.createElement("SeedsURLS");
                 Element exclude = doc.createElement("Exclude");
+                Element excludeURLs = doc.createElement("ExcludeURLs");
                 Element specialPattern = doc.createElement("SpecialText");
                 rootURL.appendChild(doc.createTextNode(url[i]));
                 outputP.appendChild(doc.createTextNode(outputPath[i]));
                 for(int j = 0; j < k; j++)
                 {
-                    seeds.appendChild(doc.createTextNode(seed[i][j]));
+                    seedsURLs.appendChild(doc.createTextNode(seed[i][j]));
                 }
                 for(int j = 0; j < l; j++)
                 {
-                    exclude.appendChild(doc.createTextNode(excludes[i][j]));
+                    excludeURLs.appendChild(doc.createTextNode(excludes[i][j]));
                 }
                 specialPattern.appendChild(doc.createTextNode(specialTextPattern[i]));
 
                 crawlId.appendChild(rootURL);
                 crawlId.appendChild(outputP);
                 crawlId.appendChild(seeds);
+                seeds.appendChild(seedsURLs);
                 crawlId.appendChild(exclude);
+                exclude.appendChild(excludeURLs);
                 crawlId.appendChild(specialPattern);
                 rootElement.appendChild(crawlId);
 
@@ -110,12 +114,8 @@ public class XMLWriter {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "5");
 
-            transformer.transform(new DOMSource(doc),new StreamResult("data/storedData.xml"));
+            transformer.transform(new DOMSource(doc),new StreamResult("data/siteData.xml"));
 
-            // Output to console for testing
-            // StreamResult result = new StreamResult(System.out);
-
-            //transformer.transform(source, result);
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
