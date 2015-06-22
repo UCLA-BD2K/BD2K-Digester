@@ -1,4 +1,6 @@
-import crawlers.*;
+package org.heartbd2k.digester;
+
+import org.heartbd2k.digester.crawlers.*;
 import org.apache.commons.cli.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

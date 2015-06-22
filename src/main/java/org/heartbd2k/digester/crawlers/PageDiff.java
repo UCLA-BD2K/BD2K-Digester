@@ -1,4 +1,4 @@
-package crawlers;
+package org.heartbd2k.digester.crawlers;
 
 import difflib.Delta;
 import difflib.DiffUtils;

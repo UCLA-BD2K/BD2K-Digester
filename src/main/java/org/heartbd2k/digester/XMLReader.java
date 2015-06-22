@@ -1,4 +1,4 @@
-/**
+package org.heartbd2k.digester; /**
  * Created by Sneha on 6/17/2015.
  */
 import javax.xml.parsers.DocumentBuilderFactory;

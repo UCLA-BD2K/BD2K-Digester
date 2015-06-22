@@ -1,4 +1,4 @@
-package crawlers;
+package org.heartbd2k.digester.crawlers;
 
 /**
  * DigestCrawler that reads from singleton CrawlerFactory.

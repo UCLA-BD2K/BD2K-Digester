@@ -1,4 +1,4 @@
-package crawlers;
+package org.heartbd2k.digester.crawlers;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;

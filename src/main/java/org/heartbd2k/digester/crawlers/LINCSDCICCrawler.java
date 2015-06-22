@@ -1,4 +1,4 @@
-package crawlers;
+package org.heartbd2k.digester.crawlers;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;

@@ -1,4 +1,4 @@
-package crawlers;
+package org.heartbd2k.digester.crawlers;
 
 /**
  * Singleton-class to hold DynamicCrawler parameters.
