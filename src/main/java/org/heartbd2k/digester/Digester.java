@@ -32,8 +32,8 @@ public class Digester {
     private final static String PROGRAM_NAME = "Digester";
     private final static String DEFAULT_FILETYPE_FILTERS = ".*(\\.(css|gif|js|jpg|png|mp3|mp3|zip|gz|ico))";
     private final static String DEFAULT_OUTPUT_PATH = System.getProperty("user.dir");
-    private final static String DIFF_SUBPATH = "/digest/diffs/";
-    private final static String CRAWLS_SUBPATH = "/digest/crawls/";
+    private final static String DIFF_SUBPATH = "/target/digest/diffs/";
+    private final static String CRAWLS_SUBPATH = "/target/digest/crawls/";
 
     public static void main(String[] args) {
         // Create options
@@ -182,7 +182,12 @@ public class Digester {
                     excludeList[j] = excludeNodes.item(j).getTextContent();
                 }
 
-                String specialTextPattern = crawlNode.getElementsByTagName("SpecialText").item(0).getTextContent();
+                // Get special text patterns
+                String specialTextPattern = "";
+                NodeList specialNodes = crawlNode.getElementsByTagName("SpecialText");
+                if (specialNodes != null && specialNodes.getLength() > 0) {
+                    specialTextPattern = specialNodes.item(0).getTextContent();
+                }
 
                 // Create and run crawler
                 String crawlOutputPath = outputPath + CRAWLS_SUBPATH + crawlID;

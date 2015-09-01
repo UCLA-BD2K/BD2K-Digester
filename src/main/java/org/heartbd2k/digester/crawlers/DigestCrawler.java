@@ -255,7 +255,7 @@ public class DigestCrawler extends WebCrawler {
      * Returns the last modified file from the directory.
      *
      * @param dirPath   Directory to search
-     * @return
+     * @return File object; null if no files.
      */
     private static File getLatestFileFromDir(String dirPath){
         File dir = new File(dirPath);

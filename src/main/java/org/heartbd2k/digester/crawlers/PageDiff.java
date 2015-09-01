@@ -44,7 +44,7 @@ public class PageDiff {
 
             // Find URL of delta
             for (int i = pos; i >= 0; i--) {
-                if (f2.get(i).startsWith("URL: ")) {
+                if (!f2.isEmpty() && f2.get(i).startsWith("URL: ")) {
                     pageDiffs.add(new PageDiff(f2.get(i), delta));
                     break;
                 }
