@@ -5,37 +5,32 @@
         <OutputPath>data/ENIGMA</OutputPath>
         <Seeds/>
         <Excludes/>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="Harvard">
         <RootURL>http://www.pic-sure.org/</RootURL>
         <OutputPath>data/Harvard</OutputPath>
         <Seeds/>
         <Excludes/>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="LINCS-DCIC">
         <RootURL>http://lincs-dcic.org/</RootURL>
         <OutputPath>data/LINCS-DCIC</OutputPath>
         <Seeds/>
         <Excludes/>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="Mobilize">
         <RootURL>http://mobilize.stanford.edu/</RootURL>
         <OutputPath>data/mobilize</OutputPath>
         <Seeds/>
         <Excludes/>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="Stanford">
-        <RootURL>https://med.stanford.edu/</RootURL>
+        <RootURL>https://med.stanford.edu/cedar</RootURL>
         <OutputPath>data/Stanford</OutputPath>
         <Seeds>
             <SeedURL>https://med.stanford.edu/cedar.html</SeedURL>
         </Seeds>
         <Excludes/>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="UCLA">
         <RootURL>http://www.heartbd2k.org/</RootURL>
@@ -44,48 +39,144 @@
         <Excludes>
             <ExcludeURL>http://www.heartbd2k.org/cdn-cgi/l/email-protection</ExcludeURL>
         </Excludes>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="UCSC">
         <RootURL>https://genomics.soe.ucsc.edu/bd2k</RootURL>
         <OutputPath>data/UCSC</OutputPath>
         <Seeds/>
         <Excludes/>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="UIUC">
         <RootURL>http://knoweng.org/</RootURL>
         <OutputPath>data/UIUC</OutputPath>
         <Seeds/>
         <Excludes/>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="UMemphis">
         <RootURL>https://md2k.org/</RootURL>
         <OutputPath>data/UMemphis</OutputPath>
         <Seeds/>
         <Excludes/>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="UPitt">
         <RootURL>http://www.ccd.pitt.edu/</RootURL>
         <OutputPath>data/UPitt</OutputPath>
         <Seeds/>
         <Excludes/>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="USC">
         <RootURL>http://bd2k.ini.usc.edu/</RootURL>
         <OutputPath>data/USC</OutputPath>
         <Seeds/>
         <Excludes/>
-        <SpecialText/>
     </CrawlID>
     <CrawlID ID="UWisc">
         <RootURL>http://cpcp.wisc.edu/</RootURL>
         <OutputPath>data/UWisc</OutputPath>
         <Seeds/>
         <Excludes/>
-        <SpecialText/>
+    </CrawlID>
+    <CrawlID ID="KnowEng">
+        <RootURL>http://knoweng.org/</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="PicSure">
+        <RootURL>http://www.pic-sure.org/</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="JHU">
+        <RootURL>http://icm.jhu.edu/</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="Kleinstein">
+        <RootURL>http://medicine.yale.edu/lab/kleinstein/</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="Wager">
+        <RootURL>http://wagerlab.colorado.edu</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="Mattingly">
+        <RootURL>http://mattinglylab.com/</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="CICS">
+        <RootURL>http://bioimage.coe.drexel.edu/info/</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="OHSU">
+        <RootURL>http://skynet.ohsu.edu/~hersh/bd2k/</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="UCLA-CEILS">
+        <RootURL>http://ceils.ucla.edu/index.php/education-projects</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="BDC4CM">
+        <RootURL>http://informatics.mayo.edu/BDC4CM</RootURL>
+        <Seeds/>
+        <SeedURL>http://bdc4cm.org/</SeedURL>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="Amaro">
+        <RootURL>https://amarolab.ucsd.edu</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="UWash">
+        <RootURL>http://www.biostat.washington.edu/</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="Pellegrini">
+        <RootURL>http://pellegrini.mcdb.ucla.edu/Lab/</RootURL>
+        <Seeds>
+            <SeedURL>http://pellegrini.mcdb.ucla.edu/Lab/Home.html</SeedURL>
+            <SeedURL>http://pellegrini.mcdb.ucla.edu/Lab/People.html</SeedURL>
+            <SeedURL>http://pellegrini.mcdb.ucla.edu/Lab/Publications.html</SeedURL>
+            <SeedURL>http://pellegrini.mcdb.ucla.edu/Lab/Resources.html</SeedURL>
+            <SeedURL>http://pellegrini.mcdb.ucla.edu/Lab/Contact.html</SeedURL>
+            <SeedURL>http://pellegrini.mcdb.ucla.edu/Lab/News.html</SeedURL>
+            <SeedURL>http://pellegrini.mcdb.ucla.edu/Lab/Lab_Meetings.html</SeedURL>
+            <SeedURL>http://pellegrini.mcdb.ucla.edu/Lab/Teaching.html</SeedURL>
+        </Seeds>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="Novembre">
+        <RootURL>http://jnpopgen.org</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="Harvard">
+        <RootURL>http://compbio.med.harvard.edu</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="ProteinDiffraction">
+        <RootURL>http://proteindiffraction.org/</RootURL>
+        <Seeds/>
+        <Excludes/>
+    </CrawlID>
+    <CrawlID ID="Wladek">
+        <RootURL>http://olenka.med.virginia.edu/CrystUVa/</RootURL>
+        <Seeds>
+            <SeedURL>http://olenka.med.virginia.edu/CrystUVa/wladek_home.php</SeedURL>
+            <SeedURL>http://olenka.med.virginia.edu/CrystUVa/wladek_hkl.php</SeedURL>
+            <SeedURL>http://olenka.med.virginia.edu/CrystUVa/lab_member_table.php</SeedURL>
+            <SeedURL>http://olenka.med.virginia.edu/CrystUVa/alumni.php</SeedURL>
+            <SeedURL>http://olenka.med.virginia.edu/CrystUVa/wladek_publications.php</SeedURL>
+            <SeedURL>http://olenka.med.virginia.edu/CrystUVa/coverpage3.php</SeedURL>
+            <SeedURL>http://olenka.med.virginia.edu/CrystUVa/wladek_pr.php</SeedURL>
+        </Seeds>
+        <Excludes/>
     </CrawlID>
 </Links>
