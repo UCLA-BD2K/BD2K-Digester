@@ -1,5 +1,8 @@
 package org.heartbd2k.digester.crawlers;
 
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.GetRequest;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -9,12 +12,21 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +40,7 @@ public class DigestCrawler extends WebCrawler {
     private final static int NUM_CRAWLERS = 1;
     private final static String USER_AGENT_NAME = "UCLA BD2K";
     private final static String CRAWL_STORAGE_FOLDER = "temp/crawl/root";
+    private final static String LINCS_ID = "LINCS-DCIC";
 
     private String crawlID;
     private String rootURL;
@@ -36,6 +49,7 @@ public class DigestCrawler extends WebCrawler {
     private String filetypeFilter;
     private String[] URLExcludes;
     private String specialTextPatterns;
+    private Set<String> jsSet;
 
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
     private BufferedWriter writer;
@@ -67,6 +81,10 @@ public class DigestCrawler extends WebCrawler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if (getCrawlID().equals(LINCS_ID)) {
+            jsSet = new HashSet<>();
+        }
     }
 
     @Override
@@ -77,10 +95,6 @@ public class DigestCrawler extends WebCrawler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    protected BufferedWriter getWriter() {
-        return writer;
     }
 
     /**
@@ -127,6 +141,30 @@ public class DigestCrawler extends WebCrawler {
             System.out.println(page.getWebURL().getURL());
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
 
+            // Check for LINCS-DCIC js/data files
+            if (getCrawlID().equals(LINCS_ID)) {
+                htmlParseData = (HtmlParseData) page.getParseData();
+                Document doc = Jsoup.parseBodyFragment(htmlParseData.getHtml());
+                Elements scriptElements = doc.getElementsByTag("script");
+                for (Element element : scriptElements) {
+                    // Write js/data to file and add to DB if not discovered
+                    String jsURL = element.attr("src");
+                    if (jsURL != null && !jsURL.isEmpty() && jsURL.startsWith("js/data/") && !jsSet.contains(jsURL)) {
+                        jsSet.add(jsURL);
+                        System.out.println(jsURL);
+                        GetRequest request = Unirest.get(getRootURL() + jsURL);
+                        try {
+                            writer.write("JS: " + jsURL + "\n");
+                            writer.newLine();
+                            writer.write(request.asString().getBody() + "\n");
+                            writer.newLine();
+                        } catch (IOException | UnirestException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
             // Write to file
             try {
                 writer.write("PAGE: " + htmlParseData.getTitle() + "\n");
@@ -144,7 +182,7 @@ public class DigestCrawler extends WebCrawler {
 
                 writer.newLine();
                 writer.flush();
-            } catch(IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -254,10 +292,10 @@ public class DigestCrawler extends WebCrawler {
     /**
      * Returns the last modified file from the directory.
      *
-     * @param dirPath   Directory to search
+     * @param dirPath Directory to search
      * @return File object; null if no files.
      */
-    private static File getLatestFileFromDir(String dirPath){
+    private static File getLatestFileFromDir(String dirPath) {
         File dir = new File(dirPath);
 
         File[] files = dir.listFiles();

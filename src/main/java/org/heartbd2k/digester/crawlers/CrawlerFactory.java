@@ -38,11 +38,6 @@ public class CrawlerFactory {
         this.URLExcludes = URLExcludes;
         this.specialTextPatterns = specialTextPatterns;
 
-        // Check for special cases
-        if (crawlID.equals("LINCS-DCIC")) {
-            return LINCSDCICCrawler.class;
-        }
-
         return DynamicCrawler.class;
     }
 
