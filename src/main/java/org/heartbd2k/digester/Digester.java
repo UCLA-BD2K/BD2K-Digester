@@ -1,7 +1,8 @@
 package org.heartbd2k.digester;
 
-import org.heartbd2k.digester.crawlers.*;
 import org.apache.commons.cli.*;
+import org.heartbd2k.digester.crawlers.DigestCrawler;
+import org.heartbd2k.digester.crawlers.PageDiff;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -11,7 +12,10 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -156,7 +160,7 @@ public class Digester {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element crawlNode = (Element) node;
                 String crawlID = crawlNode.getAttribute("ID");
-                String RootURL = crawlNode.getElementsByTagName("RootURL").item(0).getTextContent();
+                String rootURL = crawlNode.getElementsByTagName("RootURL").item(0).getTextContent();
 
                 // Skip if not run only
                 if (site != null && !site.equals(crawlID)) {
@@ -191,7 +195,7 @@ public class Digester {
 
                 // Create and run crawler
                 String crawlOutputPath = outputPath + CRAWLS_SUBPATH + crawlID;
-                DigestCrawler crawler = new DigestCrawler(crawlID, RootURL, seedList, crawlOutputPath,
+                DigestCrawler crawler = new DigestCrawler(crawlID, rootURL, seedList, crawlOutputPath,
                         DEFAULT_FILETYPE_FILTERS, excludeList, specialTextPattern);
                 List<PageDiff> pageDiffs = crawler.getDigest();
 

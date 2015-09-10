@@ -1,39 +1,35 @@
-/**
- * Created by vincekyi on 6/25/15.
- */
+package org.heartbd2k.digester;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-
+/**
+ * SendEmail
+ * Created by vincekyi on 6/25/15.
+ */
 public class SendEmail {
-
     private static String username = "";
     private static String password = "";
     private static String email = "";
     private static String host = "";
     private static List<String> sendEmails;
 
-    private static boolean loadCredentials(String filename){
+    private static boolean loadCredentials(String filename) {
         Properties prop = new Properties();
 
         InputStream input = null;
@@ -54,7 +50,6 @@ public class SendEmail {
                     input.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return false;
                 }
             }
         }
@@ -65,29 +60,19 @@ public class SendEmail {
         host = prop.getProperty("host");
         sendEmails = new ArrayList<>();
         String tokens[] = prop.getProperty("sendEmails").split(";");
-        for (String token : tokens) {
-            sendEmails.add(token);
-        }
+        Collections.addAll(sendEmails, tokens);
 
-        if(username.isEmpty() || password.isEmpty() || email.isEmpty() || sendEmails.isEmpty())
-            return false;
-
-        return true;
-
+        return !(username.isEmpty() || password.isEmpty() || email.isEmpty() || sendEmails.isEmpty());
     }
 
-
-    public static boolean send(String credentials, String output){
-
-        if(!loadCredentials(credentials))
+    public static boolean send(String credentials, String output) {
+        if (!loadCredentials(credentials))
             return false;
 
         // Sender's email ID needs to be mentioned
         String from = email;
 
-
         // Assuming you are sending email through relay.jangosmtp.net
-
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -110,19 +95,19 @@ public class SendEmail {
             message.setFrom(new InternetAddress(from));
 
             // Set To: header field of the header.
-            for (String sendEmail: sendEmails){
+            for (String sendEmail : sendEmails) {
                 message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(sendEmail));
             }
 
             String currentTime = ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME);
             // Set Subject: header field
-            message.setSubject("Weekly Digest: "+ currentTime);
+            message.setSubject("Weekly Digest: " + currentTime);
 
             // Create the message part
             BodyPart messageBodyPart = new MimeBodyPart();
 
             // Now set the actual message
-            messageBodyPart.setText("Hello,\n\nThis email contains a digest that was completed by the crawler at "+ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME)+".");
+            messageBodyPart.setText("Hello,\n\nThis email contains a digest that was completed by the crawler at " + ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME) + ".");
 
             // Create a multipar message
             Multipart multipart = new MimeMultipart();
@@ -132,10 +117,9 @@ public class SendEmail {
 
             // Part two is attachment
             messageBodyPart = new MimeBodyPart();
-            String filename = output;
-            DataSource source = new FileDataSource(filename);
+            DataSource source = new FileDataSource(output);
             messageBodyPart.setDataHandler(new DataHandler(source));
-            messageBodyPart.setFileName(filename);
+            messageBodyPart.setFileName(output);
             multipart.addBodyPart(messageBodyPart);
 
             // Send the complete message parts
@@ -149,7 +133,7 @@ public class SendEmail {
         } catch (MessagingException e) {
             return false;
         }
+
         return true;
     }
-
 }
