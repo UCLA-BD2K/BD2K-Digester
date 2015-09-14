@@ -11,12 +11,14 @@ Aggregates and digests updates from BD2K member websites.
 
 Usage
 ---------------
-	usage: Digester -f <arg> [-h] [-o <arg>] [-s <arg>]
+	usage: Digester -f <arg> [-h] [-o <arg>] [-r <arg>] [-s <arg>]
 	Get a digest of changes to websites.
-	
+
 	 -f,--filename <arg>   (REQUIRED) Site .xml file to run
 	 -h,--help
 	 -o,--output <arg>     Output path
+	 -r,--report <arg>     Send a report to the following semi-color separated
+						   emails from email.prop
 	 -s,--siteID <arg>     Specific site ID to run (must be in file)
 
 Dependencies

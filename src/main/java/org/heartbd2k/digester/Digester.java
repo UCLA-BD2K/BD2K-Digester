@@ -18,6 +18,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class Digester {
     private final static String DEFAULT_OUTPUT_PATH = System.getProperty("user.dir");
     private final static String DIFF_SUBPATH = "/target/digest/diffs/";
     private final static String CRAWLS_SUBPATH = "/target/digest/crawls/";
+    private final static String EMAIL_PROP_PATH = "email.prop";
 
     public static void main(String[] args) {
         // Create options
@@ -71,8 +74,15 @@ public class Digester {
         Option optOutputPath = optOutputPathBuilder.build();
         options.addOption(optOutputPath);
 
+        Option.Builder optReportBuilder = Option.builder("r");
+        optReportBuilder.longOpt("report");
+        optReportBuilder.desc("Send a report to the following semi-color separated emails from " + EMAIL_PROP_PATH);
+        optReportBuilder.hasArg();
+        Option optReport = optReportBuilder.build();
+        options.addOption(optReport);
+
         HelpFormatter formatter = new HelpFormatter();
-        String header = "Get a digest of changes to websites."  + "\n\n";
+        String header = "Get a digest of changes to websites." + "\n\n";
         String footer = "\n";
 
         // Parse command line arguments
@@ -82,13 +92,13 @@ public class Digester {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
             formatter.printHelp(PROGRAM_NAME, header, options, footer, true);
-            return ;
+            return;
         }
 
         // Process arguments
         if (cmd.hasOption(optHelp.getOpt())) {
             formatter.printHelp(PROGRAM_NAME, header, options, footer, true);
-            return ;
+            return;
         }
 
         String filename = null;
@@ -107,9 +117,15 @@ public class Digester {
             System.out.println(outputPath);
         }
 
+        List<String> recipients = new ArrayList<>();
+        if (cmd.hasOption(optReport.getOpt())) {
+            String[] emails = cmd.getOptionValue(optReport.getOpt()).split(";");
+            recipients = Arrays.asList(emails);
+        }
+
         // Execute
         try {
-            executeXML(filename, site, outputPath);
+            executeXML(filename, site, outputPath, recipients);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -118,20 +134,21 @@ public class Digester {
     /**
      * Processes and runs digest on an XML file
      *
-     * @param filename      XML filename
-     * @param site          Specific site ID to run
-     * @param outputPath    Output path
+     * @param filename   XML filename
+     * @param site       Specific site ID to run
+     * @param outputPath Output path
      * @throws IOException
      */
-    public static void executeXML(String filename, String site, String outputPath) throws IOException {
+    public static void executeXML(String filename, String site, String outputPath,
+                                  List<String> recipients) throws IOException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
         // Create intermediate directories if necessary
         String diffOutputPath = outputPath + DIFF_SUBPATH;
         new File(diffOutputPath).mkdirs();
         // Create new timestamped file
-        BufferedWriter writer = new BufferedWriter(new FileWriter(
-                new File(diffOutputPath + "/DIFF" + "_" + dateFormat.format(new Date()) + ".txt")));
+        String diffReport = diffOutputPath + "/DIFF" + "_" + dateFormat.format(new Date()) + ".txt";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(diffReport)));
 
         // Open and run sites from XML file
         File fXmlFile = new File(filename);
@@ -224,5 +241,12 @@ public class Digester {
         }
 
         writer.close();
+
+        // Send report email if necessary
+        if (recipients != null && !recipients.isEmpty()) {
+            Email.send(EMAIL_PROP_PATH, recipients, "BD2K Crawl Report " + dateFormat.format(new Date()),
+                    "", diffReport); // No body
+            System.out.println("Emails sent to " + recipients);
+        }
     }
 }
