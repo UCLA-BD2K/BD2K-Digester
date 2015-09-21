@@ -11,6 +11,7 @@ import javax.mail.internet.MimeMultipart;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
@@ -61,7 +62,7 @@ public class Email {
             if (attachment != null && !attachment.isEmpty()) {
                 DataSource source = new FileDataSource(attachment);
                 messageBodyPart.setDataHandler(new DataHandler(source));
-                messageBodyPart.setFileName(attachment);
+                messageBodyPart.setFileName(Paths.get(attachment).getFileName().toString()); // Name with filename
             }
 
             // Create a multipart message and add text message and attachment
