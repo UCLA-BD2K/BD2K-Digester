@@ -62,7 +62,9 @@
         <RootURL>http://www.ccd.pitt.edu/</RootURL>
         <OutputPath>data/UPitt</OutputPath>
         <Seeds/>
-        <Excludes/>
+        <Excludes>
+            <ExcludeURL>http://www.ccd.pitt.edu/calendar/</ExcludeURL>
+        </Excludes>
     </CrawlID>
     <CrawlID ID="USC">
         <RootURL>http://bd2k.ini.usc.edu/</RootURL>
@@ -74,7 +76,9 @@
         <RootURL>http://cpcp.wisc.edu/</RootURL>
         <OutputPath>data/UWisc</OutputPath>
         <Seeds/>
-        <Excludes/>
+        <Excludes>
+            <ExcludeURL>http://cpcp.wisc.edu/calendar-node-field-date/</ExcludeURL>
+        </Excludes>
     </CrawlID>
     <CrawlID ID="KnowEng">
         <RootURL>http://knoweng.org/</RootURL>
@@ -89,12 +93,11 @@
     <CrawlID ID="JHU">
         <RootURL>http://icm.jhu.edu/</RootURL>
         <Seeds/>
-        <Excludes/>
-    </CrawlID>
-    <CrawlID ID="Kleinstein">
-        <RootURL>http://medicine.yale.edu/lab/kleinstein/</RootURL>
-        <Seeds/>
-        <Excludes/>
+        <Excludes>
+            <ExcludeURL>http://icm.jhu.edu/events</ExcludeURL>
+            <ExcludeURL>http://icm.jhu.edu/tag</ExcludeURL>
+            <ExcludeURL>http://icm.jhu.edu/news-and-events/calendar/action</ExcludeURL>
+        </Excludes>
     </CrawlID>
     <CrawlID ID="Wager">
         <RootURL>http://wagerlab.colorado.edu</RootURL>
@@ -164,7 +167,9 @@
     <CrawlID ID="ProteinDiffraction">
         <RootURL>http://proteindiffraction.org/</RootURL>
         <Seeds/>
-        <Excludes/>
+        <Excludes>
+            <ExcludeURL>http://proteindiffraction.org/datasets</ExcludeURL>
+        </Excludes>
     </CrawlID>
     <CrawlID ID="Wladek">
         <RootURL>http://olenka.med.virginia.edu/CrystUVa/</RootURL>
