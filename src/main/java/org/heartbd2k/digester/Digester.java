@@ -38,8 +38,8 @@ public class Digester {
     private final static String PROGRAM_NAME = "Digester";
     private final static String DEFAULT_FILETYPE_FILTERS = ".*(\\.(css|gif|js|jpg|png|mp3|mp3|zip|gz|ico))";
     private final static String DEFAULT_OUTPUT_PATH = System.getProperty("user.dir");
-    private final static String DIFF_SUBPATH = "/target/digest/diffs/";
-    private final static String CRAWLS_SUBPATH = "/target/digest/crawls/";
+    private final static String DIFF_SUBPATH = "/digest/diffs/";
+    private final static String CRAWLS_SUBPATH = "/digest/crawls/";
     private final static String EMAIL_PROP_PATH = "email.prop";
 
     public static void main(String[] args) {
