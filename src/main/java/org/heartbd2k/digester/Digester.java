@@ -237,6 +237,9 @@ public class Digester {
                     });
                 }
                 writer.newLine();
+
+                // Delete all but latest crawl
+                cleanDirectory(crawlOutputPath);
             }
         }
 
@@ -247,6 +250,29 @@ public class Digester {
             Email.send(EMAIL_PROP_PATH, recipients, "BD2K Crawl Report " + dateFormat.format(new Date()),
                     "", diffReport); // No body
             System.out.println("Emails sent to " + recipients);
+        }
+    }
+
+    /**
+     * Deletes all files but the last file from the directory.
+     *
+     * @param dirPath Directory to clean.
+     */
+    private static void cleanDirectory(String dirPath) {
+        File dir = new File(dirPath);
+
+        File[] files = dir.listFiles();
+        if (files == null || files.length <= 1) {
+            return;
+        }
+
+        // Delete all but last modified
+        File lastModifiedFile = files[0];
+        for (int i = 1; i < files.length; i++) {
+            if (lastModifiedFile.lastModified() < files[i].lastModified()) {
+                lastModifiedFile.delete();
+                lastModifiedFile = files[i];
+            }
         }
     }
 }
