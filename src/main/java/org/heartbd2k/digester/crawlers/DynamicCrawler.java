@@ -42,4 +42,9 @@ public class DynamicCrawler extends DigestCrawler {
     public String getSpecialTextPattern() {
         return cf.getSpecialTextPattern();
     }
+
+    @Override
+    public boolean getNonrecursive() {
+        return cf.getNonrecursive();
+    }
 }

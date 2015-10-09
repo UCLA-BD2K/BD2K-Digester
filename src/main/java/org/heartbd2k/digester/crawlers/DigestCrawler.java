@@ -50,6 +50,7 @@ public class DigestCrawler extends WebCrawler {
     private String[] URLExcludes;
     private String specialTextPatterns;
     private Set<String> jsSet;
+    private boolean nonrecursive;
 
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
     private BufferedWriter writer;
@@ -58,8 +59,8 @@ public class DigestCrawler extends WebCrawler {
         // Empty constructor to be used only by subclasses.
     }
 
-    public DigestCrawler(String crawlID, String rootURL, String[] seedURLs, String outputPath,
-                         String filetypeFilter, String[] URLExcludes, String specialTextPatterns) {
+    public DigestCrawler(String crawlID, String rootURL, String[] seedURLs, String outputPath, String filetypeFilter,
+                         String[] URLExcludes, String specialTextPatterns, boolean nonrecursive) {
         this.crawlID = crawlID;
         this.rootURL = rootURL;
         this.seedURLs = seedURLs;
@@ -67,6 +68,7 @@ public class DigestCrawler extends WebCrawler {
         this.filetypeFilter = filetypeFilter;
         this.URLExcludes = URLExcludes;
         this.specialTextPatterns = specialTextPatterns;
+        this.nonrecursive = nonrecursive;
     }
 
     @Override
@@ -222,6 +224,10 @@ public class DigestCrawler extends WebCrawler {
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(CRAWL_STORAGE_FOLDER);
+        // Set nonrecursive flag
+        if (getNonrecursive()) {
+            config.setMaxPagesToFetch(1);
+        }
 
         /*
          * Instantiate the controller for this crawl.
@@ -250,7 +256,7 @@ public class DigestCrawler extends WebCrawler {
          */
         System.out.println("Starting " + getCrawlID() + " crawl");
         controller.start(CrawlerFactory.getInstance().getCrawler(crawlID, rootURL, seedURLs, outputPath,
-                filetypeFilter, URLExcludes, specialTextPatterns), NUM_CRAWLERS);
+                filetypeFilter, URLExcludes, specialTextPatterns, nonrecursive), NUM_CRAWLERS);
         System.out.println("Crawl complete");
     }
 
@@ -280,6 +286,10 @@ public class DigestCrawler extends WebCrawler {
 
     public String getSpecialTextPattern() {
         return specialTextPatterns;
+    }
+
+    public boolean getNonrecursive() {
+        return nonrecursive;
     }
 
     private String cleanText(String text) {

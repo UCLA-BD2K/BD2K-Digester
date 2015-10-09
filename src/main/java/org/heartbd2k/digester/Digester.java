@@ -179,6 +179,9 @@ public class Digester {
                 String crawlID = crawlNode.getAttribute("ID");
                 String rootURL = crawlNode.getElementsByTagName("RootURL").item(0).getTextContent();
 
+                // Get nonrecursive flag
+                boolean nonrecursive = crawlNode.getAttribute("nonrecursive").equals("true");
+
                 // Skip if not run only
                 if (site != null && !site.equals(crawlID)) {
                     continue;
@@ -213,7 +216,7 @@ public class Digester {
                 // Create and run crawler
                 String crawlOutputPath = outputPath + CRAWLS_SUBPATH + crawlID;
                 DigestCrawler crawler = new DigestCrawler(crawlID, rootURL, seedList, crawlOutputPath,
-                        DEFAULT_FILETYPE_FILTERS, excludeList, specialTextPattern);
+                        DEFAULT_FILETYPE_FILTERS, excludeList, specialTextPattern, nonrecursive);
                 List<PageDiff> pageDiffs = crawler.getDigest();
 
                 // Output results to diff file

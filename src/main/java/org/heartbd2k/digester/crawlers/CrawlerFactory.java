@@ -14,6 +14,7 @@ public class CrawlerFactory {
     private String filetypeFilter;
     private String[] URLExcludes;
     private String specialTextPatterns;
+    private boolean nonrecursive;
 
     protected CrawlerFactory() {
         // Should not be instantiated by public.
@@ -29,7 +30,7 @@ public class CrawlerFactory {
 
     public Class<? extends DigestCrawler> getCrawler(String crawlID, String rootURL, String[] seedURLs,
                                                      String outputPath, String filetypeFilter, String[] URLExcludes,
-                                                     String specialTextPatterns) {
+                                                     String specialTextPatterns, boolean nonrecusrive) {
         this.crawlID = crawlID;
         this.rootURL = rootURL;
         this.seedURLs = seedURLs;
@@ -37,6 +38,7 @@ public class CrawlerFactory {
         this.filetypeFilter = filetypeFilter;
         this.URLExcludes = URLExcludes;
         this.specialTextPatterns = specialTextPatterns;
+        this.nonrecursive = nonrecusrive;
 
         return DynamicCrawler.class;
     }
@@ -67,5 +69,9 @@ public class CrawlerFactory {
 
     public String getSpecialTextPattern() {
         return specialTextPatterns;
+    }
+
+    public boolean getNonrecursive() {
+        return nonrecursive;
     }
 }
