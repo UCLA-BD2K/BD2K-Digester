@@ -1,7 +1,0 @@
-email = admin@heartbd2k.org
-auth = true
-startTLS = true
-host = smtp.gmail.com
-port = 587
-username = admin@heartbd2k.org
-password = heartbd2k
