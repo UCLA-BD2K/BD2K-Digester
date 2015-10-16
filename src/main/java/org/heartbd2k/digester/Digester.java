@@ -18,10 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * usage: Digester -f <arg> [-h] [-o <arg>] [-s <arg>]
@@ -168,6 +165,10 @@ public class Digester {
             e.printStackTrace();
         }
 
+        // Setup statistics
+        int totalPagesChanged = 0;
+        Map<String, Integer> siteChangeMap = new HashMap<>();
+
         // Iterate through crawl nodes
         assert doc != null;
         doc.getDocumentElement().normalize();
@@ -231,6 +232,7 @@ public class Digester {
                     writer.newLine();
 
                     String currURL = null;
+                    int pagesChanged = 0;
                     for (PageDiff pageDiff : pageDiffs) {
                         System.out.println(pageDiff);
                         try {
@@ -242,6 +244,8 @@ public class Digester {
                                     writer.write("-");
                                 }
                                 writer.newLine();
+
+                                pagesChanged++;
                             }
 
                             writer.write("From" + "\n" + pageDiff.delta.getRevised().getLines() + "\n");
@@ -253,6 +257,9 @@ public class Digester {
                             e.printStackTrace();
                         }
                     }
+
+                    totalPagesChanged += pagesChanged;
+                    siteChangeMap.put(crawler.getCrawlID(), pagesChanged);
                 }
                 writer.newLine();
 
@@ -265,8 +272,16 @@ public class Digester {
 
         // Send report email if necessary
         if (recipients != null && !recipients.isEmpty()) {
-            Email.send(EMAIL_PROP_PATH, recipients, "BD2K Crawl Report " + dateFormat.format(new Date()), "",
-                    diffReport); // No body
+            // Generate email body
+            StringBuilder body = new StringBuilder();
+            body.append("Total pages changed: ").append(totalPagesChanged).append("\n");
+            body.append("Sites changed:\n");
+            for (Map.Entry pair : siteChangeMap.entrySet()) {
+                body.append(pair.getKey()).append(" (").append(pair.getValue()).append(")\n");
+            }
+
+            Email.send(EMAIL_PROP_PATH, recipients, "BD2K Crawl Report " + dateFormat.format(new Date()),
+                    body.toString(), diffReport);
             System.out.println("Emails sent to " + recipients);
         }
     }
