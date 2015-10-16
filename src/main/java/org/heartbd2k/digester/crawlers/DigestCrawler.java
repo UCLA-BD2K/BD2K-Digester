@@ -171,6 +171,10 @@ public class DigestCrawler extends WebCrawler {
             try {
                 writer.write("PAGE: " + htmlParseData.getTitle() + "\n");
                 writer.write("URL: " + page.getWebURL().getURL() + "\n");
+                // Create horizontal line
+                for (int i = 0; i < 80; i++) {
+                    writer.write("-");
+                }
                 writer.newLine();
 
                 // Write text
@@ -253,6 +257,8 @@ public class DigestCrawler extends WebCrawler {
         /*
          * Start the crawl. This is a blocking operation, meaning that your code
          * will reach the line after this only when crawling is finished.
+         *
+         * Uses CrawlerFactory to create a DynamicCrawler that reads crawl information from the CrawlerFactory.
          */
         System.out.println("Starting " + getCrawlID() + " crawl");
         controller.start(CrawlerFactory.getInstance().getCrawler(crawlID, rootURL, seedURLs, outputPath,

@@ -26,12 +26,12 @@ import java.util.List;
 /**
  * usage: Digester -f <arg> [-h] [-o <arg>] [-s <arg>]
  * Get a digest of changes to websites.
- *
+ * <p/>
  * -f,--filename <arg>   (REQUIRED) Site .xml file to run
  * -h,--help
  * -o,--output <arg>     Output path
  * -s,--siteID <arg>     Specific site ID to run (must be in file)
- *
+ * <p/>
  * Created by Alan on 6/15/2015.
  */
 public class Digester {
@@ -172,8 +172,8 @@ public class Digester {
         assert doc != null;
         doc.getDocumentElement().normalize();
         NodeList crawlNodes = doc.getElementsByTagName("CrawlID");
-        for (int i = 0; i < crawlNodes.getLength(); i++) {
-            Node node = crawlNodes.item(i);
+        for (int siteIndex = 0; siteIndex < crawlNodes.getLength(); siteIndex++) {
+            Node node = crawlNodes.item(siteIndex);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element crawlNode = (Element) node;
                 String crawlID = crawlNode.getAttribute("ID");
@@ -219,16 +219,31 @@ public class Digester {
                         DEFAULT_FILETYPE_FILTERS, excludeList, specialTextPattern, nonrecursive);
                 List<PageDiff> pageDiffs = crawler.getDigest();
 
-                // Output results to diff file
-                writer.write(crawler.getCrawlID() + "\n");
-                writer.write(crawler.getRootURL() + "\n");
-                if (pageDiffs == null || pageDiffs.isEmpty()) {
-                    writer.write("\n" + "No changes" + "\n");
-                } else {
-                    pageDiffs.forEach((PageDiff pageDiff) -> {
+                if (pageDiffs != null && !pageDiffs.isEmpty()) {
+                    // Output results to diff file only if there are changes
+                    writer.write(crawler.getCrawlID() + "\n");
+                    writer.write(crawler.getRootURL() + "\n");
+
+                    // Create horizontal line
+                    for (int i = 0; i < 80; i++) {
+                        writer.write("=");
+                    }
+                    writer.newLine();
+
+                    String currURL = null;
+                    for (PageDiff pageDiff : pageDiffs) {
                         System.out.println(pageDiff);
                         try {
-                            writer.write(pageDiff.URL + "\n");
+                            // Write URL for each page
+                            if (currURL == null || !pageDiff.URL.equals(currURL)) {
+                                currURL = pageDiff.URL;
+                                writer.write(pageDiff.URL + "\n");
+                                for (int i = 0; i < 80; i++) {
+                                    writer.write("-");
+                                }
+                                writer.newLine();
+                            }
+
                             writer.write("From" + "\n" + pageDiff.delta.getRevised().getLines() + "\n");
                             writer.write("To " + "[Position: " + pageDiff.delta.getRevised().getPosition() +
                                     " Size: " + pageDiff.delta.getRevised().size() + " ]" + "\n" +
@@ -237,7 +252,7 @@ public class Digester {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    });
+                    }
                 }
                 writer.newLine();
 
@@ -250,8 +265,8 @@ public class Digester {
 
         // Send report email if necessary
         if (recipients != null && !recipients.isEmpty()) {
-            Email.send(EMAIL_PROP_PATH, recipients, "BD2K Crawl Report " + dateFormat.format(new Date()),
-                    "", diffReport); // No body
+            Email.send(EMAIL_PROP_PATH, recipients, "BD2K Crawl Report " + dateFormat.format(new Date()), "",
+                    diffReport); // No body
             System.out.println("Emails sent to " + recipients);
         }
     }
