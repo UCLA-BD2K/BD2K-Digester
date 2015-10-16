@@ -195,7 +195,6 @@ public class Digester {
                 String seedList[] = new String[numSeeds];
                 for (int j = 0; j < numSeeds; j++) {
                     seedList[j] = seedNodes.item(j).getTextContent();
-                    System.out.println(seedList[j]);
                 }
 
                 // Process URL excludes
@@ -280,8 +279,8 @@ public class Digester {
                 body.append(pair.getKey()).append(" (").append(pair.getValue()).append(")\n");
             }
 
-            Email.send(EMAIL_PROP_PATH, recipients, "BD2K Crawl Report " + dateFormat.format(new Date()),
-                    body.toString(), diffReport);
+            Email.send(EMAIL_PROP_PATH, recipients,
+                    "BD2K " + filename + " Crawl Report " + dateFormat.format(new Date()), body.toString(), diffReport);
             System.out.println("Emails sent to " + recipients);
         }
     }
