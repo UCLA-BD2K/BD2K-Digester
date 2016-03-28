@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Links>
+<CrawlTasks>
     <CrawlID ID="ENIGMA">
         <RootURL>http://enigma.ini.usc.edu/</RootURL>
         <OutputPath>data/ENIGMA</OutputPath>
@@ -102,7 +102,9 @@
     <CrawlID ID="Wager">
         <RootURL>http://wagerlab.colorado.edu</RootURL>
         <Seeds/>
-        <Excludes/>
+        <Excludes>
+            <ExcludeURL>http://wagerlab.colorado.edu/wiki/doku.php</ExcludeURL>
+        </Excludes>
     </CrawlID>
     <CrawlID ID="Mattingly">
         <RootURL>http://mattinglylab.com/</RootURL>
@@ -184,4 +186,4 @@
         </Seeds>
         <Excludes/>
     </CrawlID>
-</Links>
+</CrawlTasks>
