@@ -15,11 +15,12 @@ Usage
 	usage: Digester -f <arg> [-h] [-o <arg>] [-r <arg>] [-s <arg>]
 	Get a digest of changes to websites.
 
+     -e,--email <arg>      (REQUIRED if -r) Outgoing email properties file
 	 -f,--filename <arg>   (REQUIRED) Site .xml file to run
 	 -h,--help
 	 -o,--output <arg>     Output path
 	 -r,--report <arg>     Send a report to the following semi-color separated
-						   emails from email.prop
+						   emails
 	 -s,--siteID <arg>     Specific site ID to run (must be in file)
 
 ### Scheduling Runs
@@ -29,8 +30,18 @@ Create a .bat file to run digester.jar using `java -jar` with the desired
 options, and schedule using Windows Task Scheduler. Ensure that the "Start in"
 directory is set correctly. Test by manually running the task.
 
-Site XML Definitions
----------------
+### Email Properties File
+Example:
+
+    email = admin@heartbd2k.org
+    auth = true
+    startTLS = true
+    host = smtp.gmail.com
+    port = 587
+    username = admin@heartbd2k.org
+    password = PASSWORD
+
+### Site XML Definitions
 Example:
 
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>

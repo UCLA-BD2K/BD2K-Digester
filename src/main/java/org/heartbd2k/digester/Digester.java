@@ -24,9 +24,12 @@ import java.util.*;
  * usage: Digester -f <arg> [-h] [-o <arg>] [-s <arg>]
  * Get a digest of changes to websites.
  * <p/>
+ * -e,--email <arg>      (REQUIRED if -r) Outgoing email properties file
  * -f,--filename <arg>   (REQUIRED) Site .xml file to run
  * -h,--help
  * -o,--output <arg>     Output path
+ * -r,--report <arg>     Send a report to the following semi-color separated
+ *                       emails
  * -s,--siteID <arg>     Specific site ID to run (must be in file)
  * <p/>
  * Created by Alan on 6/15/2015.
@@ -37,7 +40,6 @@ public class Digester {
     private final static String DEFAULT_OUTPUT_PATH = System.getProperty("user.dir");
     private final static String DIFF_SUBPATH = "/digest/diffs/";
     private final static String CRAWLS_SUBPATH = "/digest/crawls/";
-    private final static String EMAIL_PROP_PATH = "email.prop";
 
     public static void main(String[] args) {
         // Create options
@@ -57,6 +59,13 @@ public class Digester {
         Option optFile = optFileBuilder.build();
         options.addOption(optFile);
 
+        Option.Builder optEmailBuilder = Option.builder("e");
+        optEmailBuilder.longOpt("email");
+        optEmailBuilder.desc("(REQUIRED if -r) Outgoing email properties file");
+        optEmailBuilder.hasArg();
+        Option optEmail = optEmailBuilder.build();
+        options.addOption(optEmail);
+
         Option.Builder optSiteBuilder = Option.builder("s");
         optSiteBuilder.longOpt("siteID");
         optSiteBuilder.desc("Specific site ID to run (must be in file)");
@@ -73,7 +82,7 @@ public class Digester {
 
         Option.Builder optReportBuilder = Option.builder("r");
         optReportBuilder.longOpt("report");
-        optReportBuilder.desc("Send a report to the following semi-color separated emails from " + EMAIL_PROP_PATH);
+        optReportBuilder.desc("Send a report to the following semi-color separated emails");
         optReportBuilder.hasArg();
         Option optReport = optReportBuilder.build();
         options.addOption(optReport);
@@ -114,15 +123,22 @@ public class Digester {
             System.out.println(outputPath);
         }
 
+        String emailProp = null;
         List<String> recipients = new ArrayList<>();
         if (cmd.hasOption(optReport.getOpt())) {
             String[] emails = cmd.getOptionValue(optReport.getOpt()).split(";");
             recipients = Arrays.asList(emails);
+            emailProp = cmd.getOptionValue(optEmail.getOpt());
+
+            if (emailProp == null || emailProp.isEmpty()) {
+                formatter.printHelp(PROGRAM_NAME, header, options, footer, true);
+                return ;
+            }
         }
 
         // Execute
         try {
-            executeXML(filename, site, outputPath, recipients);
+            executeXML(filename, emailProp, site, outputPath, recipients);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -136,7 +152,7 @@ public class Digester {
      * @param outputPath Output path
      * @throws IOException
      */
-    public static void executeXML(String filename, String site, String outputPath,
+    public static void executeXML(String filename, String emailProp, String site, String outputPath,
                                   List<String> recipients) throws IOException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
@@ -279,7 +295,7 @@ public class Digester {
                 body.append(pair.getKey()).append(" (").append(pair.getValue()).append(")\n");
             }
 
-            Email.send(EMAIL_PROP_PATH, recipients,
+            Email.send(emailProp, recipients,
                     "BD2K " + filename + " Crawl Report " + dateFormat.format(new Date()), body.toString(), diffReport);
             System.out.println("Emails sent to " + recipients);
         }
