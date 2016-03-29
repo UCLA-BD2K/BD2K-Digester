@@ -172,7 +172,7 @@ public class Digester {
         // Iterate through crawl nodes
         assert doc != null;
         doc.getDocumentElement().normalize();
-        NodeList crawlNodes = doc.getElementsByTagName("CrawlID");
+        NodeList crawlNodes = doc.getElementsByTagName("CrawlTask");
         for (int siteIndex = 0; siteIndex < crawlNodes.getLength(); siteIndex++) {
             Node node = crawlNodes.item(siteIndex);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
