@@ -7,7 +7,8 @@ BD2K-Digester
 -------------------------------------------------------------------------------
 Overview
 ---------------
-Aggregates and digests updates from BD2K member websites.
+Aggregates and digests updates from BD2K member websites specified in an XML
+file.
 
 Usage
 ---------------
@@ -20,6 +21,45 @@ Usage
 	 -r,--report <arg>     Send a report to the following semi-color separated
 						   emails from email.prop
 	 -s,--siteID <arg>     Specific site ID to run (must be in file)
+
+### Scheduling Runs
+**Windows**
+
+Create a .bat file to run digester.jar using `java -jar` with the desired
+options, and schedule using Windows Task Scheduler. Ensure that the "Start in"
+directory is set correctly. Test by manually running the task.
+
+Site XML Definitions
+---------------
+Example:
+
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <CrawlTasks>
+        <CrawlTask ID="JHU">
+            <RootURL>http://icm.jhu.edu/</RootURL>
+            <OutputPath>data/UPitt</OutputPath>
+            <Seeds>
+                <SeedURL>http://icm.jhu.edu/people/core-faculty/</SeedURL>
+            </Seeds>
+            <Excludes>
+                <ExcludeURL>http://icm.jhu.edu/events</ExcludeURL>
+                <ExcludeURL>http://icm.jhu.edu/tag</ExcludeURL>
+                <ExcludeURL>http://icm.jhu.edu/news-and-events/calendar/action</ExcludeURL>
+            </Excludes>
+        </CrawlTask>
+    </CrawlTasks>
+
+Name | Description
+------------ | -------------
+CrawlTasks | Wrapper node for CrawlTasks.
+CrawlTask | Contains crawling information for each site.
+CrawlTask:ID | Determines output path. Should be unique. Used with `-s` option. (REQUIRED)
+RootURL | Root domain prefix to crawl. Also used as the first seed. (REQUIRED)
+OutputPath | Specifies output path. (DEPRECATED)
+Seeds | Wrapper node for SeedURLs.
+SeedURL | Additional seed URLs to visit.
+Excludes | Wrapper node for ExcludeURLs.
+ExcludeURL | URL prefixes to avoid crawling.
 
 Dependencies
 ---------------
